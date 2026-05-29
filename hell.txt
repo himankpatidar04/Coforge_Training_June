@@ -1,0 +1,414 @@
+create database alstonia;
+
+use alstonia;
+
+
+
+Create Table Employee (
+
+empid int,
+
+empname varchar(20),
+
+dob date,
+
+toj datetime,
+
+salary decimal(5, 2) ,
+
+address text,
+
+phoneno bigint,
+
+isActive bit
+
+);
+
+
+
+exec sp\_help employee;
+
+
+
+
+
+Insert into employee values
+
+(101, 'Rajat', '01-06-2024', '01-06-2024 12:00:00', 100.40, 'Pune', 9862473242, 1),
+
+(102, 'Shreya', '01-06-2024', '01-06-2024 13:00:00', 300.40, 'Ahemdabad', 9676473212, 1);
+
+
+
+Select \* From employee;
+
+
+
+\--Update
+
+
+
+update employee set address = "Chennai" where empid = 102;
+
+
+
+\--Delete
+
+delete from employee where empid = 101;
+
+
+
+\-- ALter
+
+Add Column
+
+Drop Column
+
+Rename Column
+
+Change Column Datatype
+
+
+
+\--Add Column
+
+Alter Table employee add surname varchar(10);
+
+
+
+\--Rename Column
+
+exec sp\_rename 'employee.surname', 'lastname', 'column';
+
+
+
+\-- column datatype change
+
+alter table employee alter column lastname text;
+
+
+
+\--column drop
+
+alter table employee drop column lastname;
+
+
+
+exec sp\_help employee;
+
+
+
+\--Aggregate Mthd -- max, min, avg, sum, count
+
+
+
+Select  max(empid) from employee;
+
+Select min(empid) from employee;
+
+Select count(empid) from employee;
+
+Select sum(empid) from employee;
+
+Select avg(empid) from employee;
+
+
+
+
+
+
+
+\-- KEYS
+
+\---- Primary Key -- Unique Key
+
+
+
+alter table employee alter column empid int not null;
+
+alter table employee add primary key (empid);
+
+
+
+\-- Foreign Key --
+
+
+
+create table employeespouse(spouseid int primary key, empid\_link int foreign key references employee(empid));
+
+
+
+insert into employeespouse values(1, 101)
+
+insert into employeespouse values(2, 103)
+
+
+
+\-- Composite key -- WHERE two or more column combined to uniquely identify row
+
+primary key (empid, dob);
+
+
+
+\-- Candidate key -- alternative of primary key (second best)
+
+
+
+\--Unique  -- Constrant where one value can be Null
+
+
+
+alter table employee add state varchar(10);
+
+
+
+update employee set state = "MH" where empid = 101;
+
+
+
+update employee set state = "UP" where empid = 102;
+
+
+
+alter table employee add constraint uq\_State unique(state);
+
+
+
+Select \* from employee;
+
+
+
+\-- Identity  -- do increment in id like autoincrement  of MySql
+
+alter table employee add id int identity(1,1);
+
+
+
+
+
+\-- Check
+
+
+
+alter table employee add constraint ck\_empid check (empid > 101)
+
+
+
+\-- Default
+
+alter table employee add country varchar(10) default "IN";
+
+select \* from Employee;
+
+
+
+\-- in
+
+Select \* from employee where state in ("Del", "UP")
+
+
+
+\-- Between
+
+select \* from employee where empid between 101 and 103;
+
+
+
+\--and
+
+Select \* from employee where empid <= 13 and state ="KA";
+
+
+
+\-- not equal
+
+Select \* from employee where State != "KA";
+
+select \* from employee where State <> "KA";
+
+
+
+
+
+
+
+
+
+\--CASE AND Alias
+
+
+
+select empid, empname, state,
+
+case
+
+when state = "KR" then "South"
+
+when state = "MH" then "Central"
+
+when state = "UK" then "North"
+
+else "India"
+
+end
+
+as Region From employee;
+
+
+
+
+
+Select GETDATE();
+
+Select month(GETDATE());
+
+Select datename(month, GETDATE());
+
+
+
+\--SubString
+
+
+
+select SUBSTRING('hellos world', 0,6);
+
+
+
+\--concat
+
+
+
+select concat('hello', 'bye') as output;
+
+
+
+\-- Like
+
+Select \* from employee where state like "M%"; (Mean word is starting with M)
+
+
+
+\-- Union  (Duplicate is not allowed)
+
+
+
+Create table state (stateid int, statename varchar(10));
+
+insert into state values (1, 'delhi')
+
+insert into state values(2, 'Pune')
+
+
+
+Create table Country (stateid int, statename varchar(10));
+
+insert into country values (1, 'InDia')
+
+insert into country values(2, 'Pune')
+
+
+
+Select \* from state
+
+union
+
+Select \* from country;
+
+
+
+Union all (allows duplicate)
+
+
+
+\-- Join
+
+
+
+\--LEft
+
+Select employee.
+
+empid, employeespouse.spouseid
+
+from employee
+
+Left Join employeespouse
+
+on employee.empid = employeespouse.empid_link;
+
+
+
+\--Right
+
+Select employee.empid, employeespouse.spouseid
+
+from employee
+
+Right Join employeespouse
+
+on employee.empid = employeespouse.empid_link;
+
+
+
+
+
+\-- Inner
+
+Select employee.empid, employeespouse.spouseid
+
+from employee
+
+Inner Join employeespouse
+
+on employee.empid = employeespouse.empid_link;
+
+
+
+\--Full
+
+Select employee.empid, employeespouse.spouseid
+
+from employee
+
+Full Join employeespouse
+
+on employee.empid = employeespouse.empid_link;
+
+
+
+
+
+
+
+alter table employee add colorid intl;
+
+update employee set colorid = 3 where empidd = 103;
+
+
+
+\-- Joining three table
+
+
+
+Select employee.empid, employeespouse.spouseid , color.colorname
+
+from employee
+
+Full Join employeespouse
+
+on employee.empid = employeespouse.empid_link
+
+full join color
+
+on employee.colorid = color.id
+
+
+
+
+
+
+
+Transaction  = Query
+
+
+
