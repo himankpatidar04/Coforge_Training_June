@@ -12,9 +12,4 @@ Fotter2
 footer3
 
 Pay1
-pay2
 
-pay3 
-
-
-Hello
