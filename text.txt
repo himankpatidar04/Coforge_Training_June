@@ -7,8 +7,11 @@ payment
 UI UX
 
 Header
+<<<<<<< HEAD
 Footer
 Fotter2
 footer3
 
 Pay1
+=======
+>>>>>>> cf057d9a98aa9439a1fe74e9c170186c0cc69726
