@@ -14,3 +14,24 @@ git push -u origin main (master)
 ------- git branch payment 
 ------- git checkout payment 
 Switched to branch "payment"
+
+
+--- REBASE
+Feature bRanch
+Fetch VS PUll
+
+
+
+pay1 
+
+git add .
+git commit -m "pay1"
+
+pay2
+
+git stash
+
+//Checl
+git stash apply
+//check
+git stash clear
